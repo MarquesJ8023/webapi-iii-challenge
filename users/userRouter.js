@@ -1,11 +1,11 @@
-const express = 'express';
+const express = require ('express');
 const Users = require('./userDb.js'); 
 const Posts = require('../posts/postDb.js'); 
 const router = express.Router();
 
-router.post('/', validateUser, (req, res) => {
+router.post('/', validateUser, async (req, res) => {
     try {
-        const newAcct = Users.insert(req.body); 
+        const newAcct = await Users.insert(req.body); 
         res.status(200).json(newAcct); 
     } catch (error) {
         console.log(error); 
@@ -13,20 +13,21 @@ router.post('/', validateUser, (req, res) => {
     }
 });
 
-router.post('/:id/posts', validatePost (req, res) => {
+router.post('/:id/posts', validatePost, async (req, res) => {
     const postInfo = { ...req.body, user_id: req.params.id}; 
     try {
-        const newPost = Posts.insert(postInfo); 
+        const newPost = await Posts.insert(postInfo); 
         res.status(200).json(newPost); 
     } catch (error) {
         console.log(error); 
         res.status(500).json({message: "error adding Post"})
     }
+    
 });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-       const accounts = Users.get(req.query); 
+       const accounts = await Users.get(req.query); 
        res.status(200).json(accounts);  
     } catch (error) {
         console.log(error); 
@@ -34,9 +35,9 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const individualAcct = Users.getById(req.params.id); 
+        const individualAcct = await Users.getById(req.params.id); 
         res.status(200).json(individualAcct); 
     }catch (error) {
         console.log(error); 
@@ -44,9 +45,9 @@ router.get('/:id', (req, res) => {
     }
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', async (req, res) => {
     try {
-        const posts = Posts.getById(req.params.id); 
+        const posts = await Posts.getById(req.params.id); 
         res.status(200).json(posts); 
     } catch (error) {
         console.log(error); 
@@ -54,18 +55,18 @@ router.get('/:id/posts', (req, res) => {
     }
 });
 
-router.delete('/:id', validateUserId, (req, res) => {
+router.delete('/:id', validateUserId, async (req, res) => {
     try {
-        res.status(200).json(Users.remove(req.params.id) );    
+        res.status(200).json( await Users.remove(req.params.id) );    
     } catch(error) {
         console.log(error); 
         res.status(500).json({message: "Error removing user."})
     }
 });
 
-router.put('/:id', validateUserId, (req, res) => {
+router.put('/:id', validateUserId, async (req, res) => {
     try {
-        res.status(200).json(Users.update(req.params.id, req.body)); 
+        res.status(200).json(await Users.update(req.params.id, req.body)); 
     } catch (error) {
         console.log(error); 
         res.status(500).json({message: "Error updating user."})
@@ -78,7 +79,7 @@ router.put('/:id', validateUserId, (req, res) => {
     if (!req.params.id) {
       res.status(400).json({message: "invalid user id"});
     } else {
-      req.user = (`${req.params.id}`); 
+      req.user = `${req.params.id}`; 
       next(); 
     }
   }

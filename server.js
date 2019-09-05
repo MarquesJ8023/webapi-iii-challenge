@@ -1,4 +1,4 @@
-const express = 'express';
+const express = require ('express');
 const userRouter = require('./users/userRouter');
 const postRouter = require('./posts/postRouter.js');
 const server = express();

@@ -1,10 +1,10 @@
-const express = 'express';
+const express = require ('express');
 
 const Posts = require('../posts/postDb.js'); 
 
 const router = express.Router();
 
-router.get('/', async, (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const posts = await Posts.get(req.query); 
         res.status(200).json(posts);  
@@ -14,7 +14,7 @@ router.get('/', async, (req, res) => {
      }
 });
 
-router.get('/:id', validatePostId, async, (req, res) => {
+router.get('/:id', validatePostId, async (req, res) => {
     try {
         const individualPosts = await Posts.getById(req.params.id); 
         res.status(200).json(individualPosts); 
@@ -24,7 +24,7 @@ router.get('/:id', validatePostId, async, (req, res) => {
     }
 });
 
-router.delete('/:id', validatePostId, async, (req, res) => {
+router.delete('/:id', validatePostId, async (req, res) => {
     try {
         res.status(200).json( await Posts.remove(req.params.id) );    
     } catch(error) {
@@ -33,7 +33,7 @@ router.delete('/:id', validatePostId, async, (req, res) => {
     }
 });
 
-router.put('/:id', validatePostId, async, (req, res) => {
+router.put('/:id', validatePostId, async (req, res) => {
     try {
         res.status(200).json(await Posts.update(req.params.id, req.body)); 
     } catch (error) {
