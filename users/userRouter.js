@@ -3,9 +3,9 @@ const Users = require('./userDb.js');
 const Posts = require('../posts/postDb.js'); 
 const router = express.Router();
 
-router.post('/', validateUser, async, (req, res) => {
+router.post('/', validateUser, (req, res) => {
     try {
-        const newAcct = await Users.insert(req.body); 
+        const newAcct = Users.insert(req.body); 
         res.status(200).json(newAcct); 
     } catch (error) {
         console.log(error); 

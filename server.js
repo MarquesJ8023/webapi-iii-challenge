@@ -3,6 +3,8 @@ const userRouter = require('./users/userRouter');
 const postRouter = require('./posts/postRouter.js');
 const server = express();
 
+console.log('environment:', process.env.NODE_ENV);
+
 server.use(express.json());
 server.use(logger);
 
